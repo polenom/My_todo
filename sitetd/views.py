@@ -1,9 +1,12 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout, models
 from .forms import ToDoForm, RegisterForm, createTodo
 from .models import *
+import json
 from django.utils import timezone
-
+from django.core.paginator import  Paginator, PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def startPage(request):
     forms = ToDoForm()
@@ -32,8 +35,9 @@ def registerUser(request):
         username = request.POST['username']
         password = request.POST['password']
         email = request.POST['email']
-        if not models.User.objects.filter(username=username).exists():
-            user =models.User.objects.create_user(username, email, password)
+
+        if not User.objects.filter(username=username).exists():
+            user =User.objects.create_user(username, email, password)
             user.save()
             forms = ToDoForm()
             return redirect("/")
@@ -47,7 +51,21 @@ def pageToDo(request):
         # todos = UserToDo.objects.filter(username = username, status=True)
 
         truetodos = UserToDo.objects.filter(username = username, status=True)
+        print(truetodos)
         falsetodos = UserToDo.objects.filter(username = username, status=False)
+        paginator = Paginator(truetodos, 5)
+        paginator2 = Paginator(falsetodos,5)
+        pageNum = request.GET.get('page')
+        pageNum2 = request.GET.get('page2')
+        try:
+            truetodos = paginator.page(pageNum)
+        except PageNotAnInteger:
+            truetodos = paginator.page(1)
+        try:
+            falsetodos = paginator2.page(pageNum2)
+        except PageNotAnInteger:
+            falsetodos = paginator2.page(1)
+
         if request.method == "POST":
             username = User.objects.get(pk=request.user.pk)
             title = request.POST['title']
@@ -71,6 +89,17 @@ def pageoneToDo(request, pk):
         if form:
             return render(request, 'todo/pageoneToDo.html', {'form':form})
     return HttpResponse('mistake 404')
+
+
+@csrf_exempt
+def checkUserName(request):
+    status = False
+    if request.method == "POST":
+        username = json.loads(request.body)['username']
+        if not User.objects.filter(username=username):
+            status = True
+    return JsonResponse({'status': status})
+
 
 def test(request):
     print(request.user.is_authenticated, 77777777777777777777)

@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 class UserToDo(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user")
+    username = models.ForeignKey(User, on_delete=models.CASCADE, db_column="user", related_name="userToDo" )
     timeCreate = models.DateTimeField(default=timezone.now)
     title = models.CharField(max_length=30)
     text = models.TextField(null=True, blank=True, default='')
