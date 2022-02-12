@@ -49,14 +49,17 @@ def pageToDo(request):
         forms = createTodo()
         username = request.user
         # todos = UserToDo.objects.filter(username = username, status=True)
+        tentodos = User.objects.get(username=request.user).userToDo.all().order_by('-timeCreate')[:10]
+        print(tentodos, 77777777777777777777777777777)
+        truetodos = UserToDo.objects.filter(username = username, status=True).order_by('-timeCreate')
 
-        truetodos = UserToDo.objects.filter(username = username, status=True)
-        print(truetodos)
-        falsetodos = UserToDo.objects.filter(username = username, status=False)
+        falsetodos = UserToDo.objects.filter(username = username, status=False).order_by('-timeCreate')
         paginator = Paginator(truetodos, 5)
         paginator2 = Paginator(falsetodos,5)
         pageNum = request.GET.get('page')
         pageNum2 = request.GET.get('page2')
+        listtd = request.GET.get('list')
+
         try:
             truetodos = paginator.page(pageNum)
         except PageNotAnInteger:
@@ -75,7 +78,7 @@ def pageToDo(request):
             newToDo = UserToDo(username=username, title=title, text=text, status=status, timeCreate=timeCreate)
             newToDo.save()
             return redirect('/todo')
-    return render(request, "todo/userPage.html", {'truetodos':truetodos,'falsetodos':falsetodos, 'forms':forms, 'username': request.user})
+    return render(request, "todo/userPage.html", {'truetodos':truetodos,'falsetodos':falsetodos, 'forms':forms, 'username': request.user,'listtd': listtd, 'tentodos':tentodos})
 
 def pageoneToDo(request, pk):
     if request.user.is_authenticated:

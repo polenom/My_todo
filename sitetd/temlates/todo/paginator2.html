@@ -1,13 +1,13 @@
 <div class="pagination">
     <span class="step-links">
         {% if page2.has_previous %}
-            <a href="?page2={{ page2.previous_page_number }}&page={{page.number}}"><<</a>
+            <a href="?page2={{ page2.previous_page_number }}&page={{page.number}}&list=3"><<</a>
         {% endif %}
         <span class="current">
             {{ page2.number }}/{{ page2.paginator.num_pages }}
         </span>
         {% if page2.has_next %}
-            <a href="?page2={{ page2.next_page_number }}&page={{page.number}}">>></a>
+            <a href="?page2={{ page2.next_page_number }}&page={{page.number}}&list=3">>></a>
         {% endif %}
     </span>
 </div>
