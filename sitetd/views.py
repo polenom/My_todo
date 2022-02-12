@@ -74,6 +74,7 @@ def pageToDo(request):
             timeCreate = timezone.now()
             newToDo = UserToDo(username=username, title=title, text=text, status=status, timeCreate=timeCreate)
             newToDo.save()
+            return redirect('/todo')
     return render(request, "todo/userPage.html", {'truetodos':truetodos,'falsetodos':falsetodos, 'forms':forms, 'username': request.user})
 
 def pageoneToDo(request, pk):
@@ -83,12 +84,31 @@ def pageoneToDo(request, pk):
         except:
             form = False
         if request.method == "POST" and form:
+            text = request.POST.get('text')
+            if text != form.text and text:
+                form.text = text
+                form.save()
             form.status = True if request.POST.get('status') else False
             form.save()
             return  redirect('/todo')
         if form:
             return render(request, 'todo/pageoneToDo.html', {'form':form})
     return HttpResponse('mistake 404')
+
+
+def logoutuser(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('/')
+
+
+def deletetodo(request):
+    if request.user.is_authenticated:
+        username = User.objects.get(pk=request.user.pk)
+        todo = username.userToDo.filter(pk=request.GET.get('pk'))
+        if todo:
+            todo.delete()
+    return pageToDo(request)
 
 
 @csrf_exempt
