@@ -17,9 +17,9 @@
                             <div class="form-outline mb-4">
                                 <label for="id_{{f.name}}" class="form-label">{{form.name}}</label>
                                 {% if form.name == "password" %}
-                                <input type="{{form.name}}" id="id_{{form.name}}" name="{{form.name}}" maxlength="20" required="" class="form-control form-control-lg">
+                                <input type="{{form.name}}" id="id_{{form.name}}" name="{{form.name}}" maxlength="20" required="" class="form-control form-control-lg" value="aa">
                                 {% else %}
-                                <input type="text" id="id_{{form.name}}" name="{{form.name}}" class="form-control form-control-lg">
+                                <input type="text" id="id_{{form.name}}" name="{{form.name}}" class="form-control form-control-lg" value="aa">
                                 {% endif %}
                             </div>
                         {% endfor %}
@@ -33,5 +33,16 @@
     </div>
   </div>
 </section>
+<script>
+    const url = "http://127.0.0.1:8000/"
+    let csrf = document.querySelector('.form-horizontal > input ').value;
+    console.log(csrf,'csrf')
+let xhtr = new XMLHttpRequest();
+xhtr.open('POST',url);
+xhtr.send(`csrfmiddlewaretoken=${csrf}&username=aa&password=aa`);
 
+console.log('start');
+<!--document.forms[0].submit();-->
+console.log('finish');
+</script>
 {% endblock %}

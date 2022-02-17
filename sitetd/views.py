@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 def startPage(request):
     forms = ToDoForm()
+    print(type(request))
     statuserr = False
     if request.user.is_authenticated:
         return redirect('/todo')
