@@ -20,4 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sitetd.urls')),
+    path('oauth/', include('social_django.urls')),
+    path('silk/', include('silk.urls', namespace='silk'))
 ]

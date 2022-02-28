@@ -50,8 +50,8 @@ def pageToDo(request):
         forms = createTodo()
         username = request.user
         # todos = UserToDo.objects.filter(username = username, status=True)
-        tentodos = User.objects.get(username=request.user).userToDo.all().order_by('-timeCreate')[:10]
-
+        # tentodos = User.objects.get(username=request.user).userToDo.all().order_by('-timeCreate')[:10]
+        tentodos= UserToDo.objects.select_related('username').filter(username=request.user.pk).order_by("-timeCreate")[:10]
         truetodos = UserToDo.objects.filter(username = username, status=True).order_by('-timeCreate')
 
         falsetodos = UserToDo.objects.filter(username = username, status=False).order_by('-timeCreate')

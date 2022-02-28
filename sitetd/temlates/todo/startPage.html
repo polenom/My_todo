@@ -26,13 +26,26 @@
                         <input type="submit" value="Log in">
                     </form>
                     <a href="/register" class="">Register</a>
-                </div>
+
+
+                                     <a href="oauth/login/vk-oauth2" class="btn rounded btn-block text-white m-10 " style="background-color: #55acee;margin-bottom: 10px;"  role="button">
+                                         <i class="fab fa-vk me-2"></i>VK
+                                    </a>
+                                    <a href="{% url 'social:begin' 'github' %}" style="background-color: #333333"  class="btn rounded btn-block text-white" role="button">
+                                         <i class="fab fa-github me-2"></i>GitHub
+                                    </a>
+
+
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+ <div>
+
+
 <script>
     const url = "http://127.0.0.1:8000/"
     let csrf = document.querySelector('.form-horizontal > input ').value;

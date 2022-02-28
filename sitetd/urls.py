@@ -10,5 +10,6 @@ urlpatterns = [
     path('todo/logout', views.logoutuser, name='logoutuser'),
     path('todo', views.pageToDo),
     path('todo/<int:pk>',views.pageoneToDo, name='onetodo' ),
-    path('register/checkuser', views.checkUserName)
+    path('register/checkuser', views.checkUserName),
+
 ]

@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'silk',
+    'social_django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,9 +43,21 @@ INSTALLED_APPS = [
     'sitetd',
 ]
 
+SOCIAL_AUTH_VK_OAUTH2_KEY = '8090250'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'NFrTe1mITHJhukFIflkl'
 
+SOCIAL_AUTH_GITHUB_KEY = '6055d5d8ecc57f25c7e4'
+SOCIAL_AUTH_GITHUB_SECRET = 'b635d35e614a9de7b641a6a139e51f5d72426e82'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+
+)
 
 MIDDLEWARE = [
+    'silk.middleware.SilkyMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,6 +76,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'social_django.context_processors.backends',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -125,3 +140,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/'
